@@ -94,3 +94,18 @@
 ;
 ; 
 
+
+(define (power x n)
+  (cond ((= 0 n) 1)
+        (else (* x (power x (- n 1))))))
+
+(define phi (/ (+ 1.0 (sqrt 5.0)) 2.0))
+
+(define (fib n)
+  (cond ((= n 0) 0)
+        ((= n 1) 1)
+        (else (+ (fib (- n 1)) (fib (- n 2))))))
+
+(define (f n)
+  (/ (power phi n) (sqrt 5)))
+
