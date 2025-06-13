@@ -3,17 +3,24 @@
 
 (load-option 'format)
 (define (count-change amount)
-  (cc amount 5))
+  (begin
+    (set! calls 0)
+    (let ((result (cc amount 5)))
+      (begin
+        (display calls)
+        (newline)
+        result))))
+
+(define calls 0)
 
 (define (cc amount kinds-of-coins)
   (begin
-    (format #t "→ cc ~A ~A ~%" amount kinds-of-coins)
+    (set! calls (+ calls 1))
     (let ((result 
             (cond ((= amount 0) 1)
                   ((or (< amount 0) (= kinds-of-coins 0)) 0)
                   (else (+ (cc amount (- kinds-of-coins 1))
                            (cc (- amount (first-denomination kinds-of-coins)) kinds-of-coins))))))
-      (format #t "← ~A ~%" result)
       result)))
 
 
@@ -24,114 +31,7 @@
         ((= kinds-of-coins 4) 25)
         ((= kinds-of-coins 5) 50)))
 
-
-; → cc 11 5
-;   → cc -39 5
-; ← 0
-;   → cc 11 4
-;     → cc -14 4
-;   ← 0
-;     → cc 11 3
-;       → cc 1 3
-;         → cc -9 3
-;       ← 0
-;         → cc 1 2
-;           → cc -4 2
-;         ← 0
-;           → cc 1 1
-;             → cc 0 1
-;           ← 1
-;             → cc 1 0
-;           ← 0
-;         ← 1
-;       ← 1
-;     ← 1
-;       → cc 11 2
-;         → cc 6 2
-;           → cc 1 2
-;             → cc -4 2
-;           ← 0
-;             → cc 1 1
-;               → cc 0 1
-;             ← 1
-;               → cc 1 0
-;             ← 0
-;           ← 1
-;         ← 1
-;           → cc 6 1
-;             → cc 5 1
-;               → cc 4 1
-;                  → cc 3 1
-;                    → cc 2 1
-;                      → cc 1 1
-;                         → cc 0 1
-;                       ← 1
-;                         → cc 1 0
-;                       ← 0
-;                     ← 1
-;                       → cc 2 0
-;                     ← 0
-;                   ← 1
-;                     → cc 3 0
-;                   ← 0
-;                 ← 1
-;                   → cc 4 0
-;                 ← 0
-;               ← 1
-;                 → cc 5 0
-;               ← 0
-;             ← 1
-;               → cc 6 0
-;             ← 0
-;           ← 1
-;         ← 2
-;           → cc 11 1
-;              → cc 10 1
-;                 → cc 9 1
-;                   → cc 8 1
-;                     → cc 7 1
-;                       → cc 6 1
-;                         → cc 5 1
-;                           → cc 4 1
-;                             → cc 3 1
-;                               → cc 2 1
-;                                 → cc 1 1
-;                                   → cc 0 1
-;                                 ← 1
-;                                   → cc 1 0
-;                                 ← 0
-;                               ← 1
-;                                 → cc 2 0
-;                               ← 0
-;                             ← 1
-;                               → cc 3 0
-;                             ← 0
-;                           ← 1
-;                             → cc 4 0
-;                           ← 0
-;                         ← 1
-;                           → cc 5 0
-;                         ← 0
-;                       ← 1
-;                         → cc 6 0
-;                       ← 0
-;                     ← 1
-;                       → cc 7 0
-;                     ← 0
-;                   ← 1
-;                     → cc 8 0
-;                   ← 0
-;                 ← 1
-;                   → cc 9 0
-;                 ← 0
-;               ← 1
-;                 → cc 10 0
-;               ← 0
-;             ← 1
-;               → cc 11 0
-;             ← 0
-;           ← 1
-;         ← 3
-;       ← 4
-;     ← 4
-;   ← 4
+(define (up-to i n step)
+  (cond
+    ((>= i n) (cons n ()))
+    (else (cons i (up-to (+ i step) n step)))))
