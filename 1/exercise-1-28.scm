@@ -77,4 +77,14 @@
   (cond ((null? (cdr l)) 0)
         (else (measure-time-for-primes (cdr l)))))
 
+(define (assert-result test-name actual expected)
+  (display (if (eq? actual expected) "pass: " "fail: "))
+  (display test-name)
+  (newline))
+
+(assert-result "   2 is prime"      (miller-rabin-prime?    2 10) #t)
+(assert-result "1009 is prime"      (miller-rabin-prime? 1009 10) #t)
+(assert-result "   4 is not prime"  (miller-rabin-prime?    4 10) #f)
+(assert-result "  99 is not prime"  (miller-rabin-prime?   99 10) #f)
+(assert-result " 561 is not prime " (miller-rabin-prime?  561 10) #f)
 
